@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply overflow-x-hidden;
+  }
+
+  * {
+    @apply border-divine-dark;
+  }
+
+  body {
+    @apply bg-divine-black text-white font-body antialiased overflow-x-hidden;
+  }
+
+  ::selection {
+    @apply bg-divine-purple-600 text-white;
+  }
+}
+
+@layer components {
+  .mystical-gradient {
+    background: linear-gradient(
+      135deg,
+      theme('colors.divine.purple.900') 0%,
+      theme('colors.divine.black') 50%,
+      theme('colors.divine.dark') 100%
+    );
+  }
+
+  .gold-gradient {
+    background: linear-gradient(
+      135deg,
+      theme('colors.divine.gold.400') 0%,
+      theme('colors.divine.gold.500') 50%,
+      theme('colors.divine.gold.600') 100%
+    );
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(
+      90deg,
+      theme('colors.divine.gold.400') 0%,
+      theme('colors.divine.gold.300') 50%,
+      theme('colors.divine.gold.400') 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .mystical-border {
+    @apply border border-divine-purple-700/30 rounded-lg;
+  }
+
+  .gold-border {
+    @apply border border-divine-gold-500/50 rounded-lg;
+  }
+
+  .mystical-card {
+    @apply bg-divine-dark/80 backdrop-blur-sm mystical-border p-6 transition-all duration-300;
+  }
+
+  .mystical-card:hover {
+    @apply border-divine-purple-500/50 shadow-lg shadow-divine-purple-500/10;
+  }
+
+  .mystical-input {
+    @apply w-full px-4 py-3 bg-divine-darker/80 border border-divine-purple-700/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-divine-purple-500 focus:ring-1 focus:ring-divine-purple-500/50 transition-all duration-300;
+  }
+
+  .mystical-button {
+    @apply px-6 py-3 gold-gradient text-divine-black font-display font-semibold rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-divine-gold-500/30 hover:scale-105 active:scale-95;
+  }
+
+  .mystical-button-outline {
+    @apply px-6 py-3 border border-divine-gold-500/50 text-divine-gold-400 font-display font-semibold rounded-lg transition-all duration-300 hover:bg-divine-gold-500/10 hover:border-divine-gold-400;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-display text-gold-gradient mb-4;
+  }
+
+  .section-subtitle {
+    @apply text-lg md:text-xl text-divine-purple-200/80 font-body;
+  }
+}
+
+@layer utilities {
+  .text-shadow-mystical {
+    text-shadow: 0 0 20px rgba(139, 71, 255, 0.5);
+  }
+
+  .text-shadow-gold {
+    text-shadow: 0 0 20px rgba(230, 184, 0, 0.5);
+  }
+
+  .glow-mystical {
+    box-shadow: 0 0 30px rgba(139, 71, 255, 0.3), 0 0 60px rgba(139, 71, 255, 0.1);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(230, 184, 0, 0.3), 0 0 60px rgba(230, 184, 0, 0.1);
+  }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-divine-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-divine-purple-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-divine-purple-600;
+}
