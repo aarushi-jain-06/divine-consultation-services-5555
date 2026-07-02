@@ -1,58 +1,26 @@
 import { useState } from 'react';
 import { useNavigation } from '../App';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
-import { Lock, Mail, Loader2, AlertCircle, Sparkles, UserPlus } from 'lucide-react';
+import { Lock, Mail, Loader2, AlertCircle, Sparkles } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [isSignUp, setIsSignUp] = useState(false);
   const { signIn } = useAuth();
   const { navigate } = useNavigation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    setSuccess(null);
 
     if (!email.trim() || !password.trim()) {
       setError('Please fill in all fields.');
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-
     setLoading(true);
-
-    if (isSignUp) {
-      const { error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-      });
-
-      setLoading(false);
-
-      if (error) {
-        if (error.message.includes('already registered')) {
-          setError('This email is already registered. Please sign in instead.');
-          setIsSignUp(false);
-        } else {
-          setError(error.message || 'Failed to create account. Please try again.');
-        }
-        return;
-      }
-
-      setSuccess('Account created! You can now sign in.');
-      setIsSignUp(false);
-      return;
-    }
 
     const { error } = await signIn(email.trim(), password);
     setLoading(false);
@@ -67,12 +35,6 @@ export default function AdminLoginPage() {
     }
 
     navigate('admin-dashboard');
-  };
-
-  const toggleMode = () => {
-    setIsSignUp(!isSignUp);
-    setError(null);
-    setSuccess(null);
   };
 
   return (
@@ -91,16 +53,9 @@ export default function AdminLoginPage() {
               Admin Portal
             </h1>
             <p className="text-gray-400 font-body text-sm">
-              {isSignUp ? 'Create your admin account' : 'Sign in to access the dashboard'}
+              Sign in to access the dashboard
             </p>
           </div>
-
-          {/* Success Message */}
-          {success && (
-            <div className="mb-5 p-3 rounded-lg bg-green-900/20 border border-green-700/30 text-green-400 text-sm font-body">
-              {success}
-            </div>
-          )}
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
@@ -133,7 +88,7 @@ export default function AdminLoginPage() {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={isSignUp ? 'Choose a password (min 6 chars)' : 'Enter your password'}
+                  placeholder="Enter your password"
                   className="mystical-input pl-12"
                   disabled={loading}
                 />
@@ -155,12 +110,7 @@ export default function AdminLoginPage() {
               {loading ? (
                 <>
                   <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                  {isSignUp ? 'Creating account...' : 'Signing in...'}
-                </>
-              ) : isSignUp ? (
-                <>
-                  <UserPlus className="h-5 w-5 mr-2" />
-                  Create Account
+                  Signing in...
                 </>
               ) : (
                 'Sign In'
@@ -168,21 +118,8 @@ export default function AdminLoginPage() {
             </button>
           </form>
 
-          {/* Toggle Sign Up/Sign In */}
-          <div className="mt-6 text-center">
-            <p className="text-gray-500 font-body text-sm">
-              {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-              <button
-                onClick={toggleMode}
-                className="text-divine-gold-400 hover:text-divine-gold-300 transition-colors"
-              >
-                {isSignUp ? 'Sign In' : 'Create Account'}
-              </button>
-            </p>
-          </div>
-
           {/* Back to Home Link */}
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             <button
               onClick={() => navigate('home')}
               className="text-divine-purple-400 hover:text-divine-purple-300 text-sm font-body transition-colors"
